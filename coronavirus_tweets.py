@@ -1,11 +1,17 @@
 # Part 3: Text mining.
 
+import pandas as pd
+
+
+
 # Return a pandas dataframe containing the data set.
 # Specify a 'latin-1' encoding when reading the data.
 # data_file will be populated with a string 
 # corresponding to a path containing the wholesale_customers.csv file.
 def read_csv_3(data_file):
-	pass
+	df = pd.read_csv(data_file, encoding = 'latin-1')
+	return df
+
 
 # Return a list with the possible sentiments that a tweet might have.
 def get_sentiments(df):
