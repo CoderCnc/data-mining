@@ -4,6 +4,7 @@ import pandas as pd
 from sklearn.cluster import KMeans, AgglomerativeClustering
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import silhouette_score
+import matplotlib.pyplot as plt
 
 # Return a pandas dataframe containing the data set that needs to be extracted from the data_file.
 # data_file will be populated with the string 'wholesale_customers.csv'.
@@ -28,9 +29,6 @@ def standardize(df):
 	standart_df = (df - df.mean()) / df.std()
 	return standart_df
 
-	scaler = StandardScaler()
-	return pd.DataFrame(scaler.fit_transform(df), columns = df.columns)
-
 
 # Given a dataframe df and a number of clusters k, return a pandas series y
 # specifying an assignment of instances to clusters, using kmeans.
@@ -38,7 +36,7 @@ def standardize(df):
 # To see the impact of the random initialization,
 # using only one set of initial centroids in the kmeans run.
 def kmeans(df, k):
-	kmeans = KMeans(n_clusters = k, random_state = 0)
+	kmeans = KMeans(n_clusters = k)
 	y = kmeans.fit_predict(df)
 	y = pd.Series(y)
 	return y
@@ -48,7 +46,7 @@ def kmeans(df, k):
 # specifying an assignment of instances to clusters, using kmeans++.
 # y should contain values from the set {0,1,...,k-1}.
 def kmeans_plus(df, k):
-	kmeans = KMeans(n_clusters = k, init = 'k-means++', random_state=0)
+	kmeans = KMeans(n_clusters = k, init = 'k-means++')
 	y = kmeans.fit_predict(df)
 	y = pd.Series(y)
 	return y
@@ -82,8 +80,8 @@ def clustering_score(X,y):
 
 def cluster_evaluation(df):
 	k_values = [3, 5, 10]
-	algorithms = ["Kmeans", 'Agglomerative']
 	data_types = ["Original", "Standardized"]
+	algorithms = ["Kmeans", 'Agglomerative']
 	cluster_evaluations_list = []
 
 
@@ -97,14 +95,14 @@ def cluster_evaluation(df):
 				
 				if algorithm == "Kmeans":
 					for i in range(10):
-						y = kmeans_plus(X, k)
-						silhouette_avg = clustering_score(X, y)
-						cluster_evaluations_list.append({'Algorithm': algorithm, 'data': data_type, 'k': k, 'run': i+1, 'Silhouette Score': silhouette_avg})
+						y = kmeans(X, k)
+						silhouette = clustering_score(X, y)
+						cluster_evaluations_list.append({'Algorithm': algorithm, 'data': data_type, 'k': k, 'run': i+1, 'Silhouette Score': silhouette})
 
 				else:
 					y = agglomerative(X, k)
-					silhouette_avg = clustering_score(X, y)
-					cluster_evaluations_list.append({'Algorithm': algorithm, 'data': data_type, 'k': k, 'Silhouette Score': silhouette_avg})
+					silhouette = clustering_score(X, y)
+					cluster_evaluations_list.append({'Algorithm': algorithm, 'data': data_type, 'k': k, 'Silhouette Score': silhouette})
 	
 	cluster_evaluations = pd.DataFrame(cluster_evaluations_list)
 	return cluster_evaluations
@@ -119,6 +117,8 @@ def best_clustering_score(rdf):
 # Run the Kmeans algorithm with k=3 by using the standardized data set.
 # Generate a scatter plot for each pair of attributes.
 # Data points in different clusters should appear with different colors.
-def scatter_plots(df):
-	pass
-
+def scatter_plots():
+	x_values = [1, 2, 3, 4, 5]
+	y_values = [1, 4, 9, 16, 25]
+    plt.plot(x_values, y_values)
+    plt.show()
