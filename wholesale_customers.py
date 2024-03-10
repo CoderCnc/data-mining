@@ -18,7 +18,7 @@ def read_csv_2(data_file):
 # These strings index the new dataframe columns. 
 # Each row should correspond to an attribute in the original data and be indexed with the attribute name.
 def summary_statistics(df):
-	return round(df.describe().loc[['mean', 'std', 'min', 'max']]))
+	return round(df.describe().loc[['mean', 'std', 'min', 'max']])
 
 
 # Given a dataframe df with numeric values, return a dataframe (new copy)
