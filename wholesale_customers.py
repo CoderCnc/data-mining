@@ -111,14 +111,19 @@ def cluster_evaluation(df):
 # Given the performance evaluation dataframe produced by the cluster_evaluation function,
 # return the best computed Silhouette score.
 def best_clustering_score(rdf):
+	print(rdf.loc[rdf['Silhouette Score'].idxmax()])
 	return rdf['Silhouette Score'].max()
 
 
 # Run the Kmeans algorithm with k=3 by using the standardized data set.
 # Generate a scatter plot for each pair of attributes.
 # Data points in different clusters should appear with different colors.
-def scatter_plots():
-	x_values = [1, 2, 3, 4, 5]
-	y_values = [1, 4, 9, 16, 25]
-    plt.plot(x_values, y_values)
-    plt.show()
+def scatter_plots(df):
+	X = standardize(df)
+	y = kmeans(X, 3)
+	X['cluster'] = y
+
+	attributes = df.columns
+	for i in range(len(attributes)):
+		for j in range(i+1, len(attributes)):
+			X.plot.scatter(x = attributes[i], y = attributes[j], c = 'cluster', colormap = 'viridis')
