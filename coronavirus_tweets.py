@@ -5,7 +5,6 @@ import requests
 from nltk.stem import PorterStemmer
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.naive_bayes import MultinomialNB
-from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import GridSearchCV
@@ -97,58 +96,20 @@ def stemming(tdf):
 # Return predicted sentiments (e.g. 'Neutral', 'Positive') for the training set
 # as a 1d array (numpy.ndarray). 
 
-
 def mnb_predict(df):
     le = LabelEncoder()
+    sentiments = df['Sentiment'].copy()
     df['Sentiment'] = le.fit_transform(df['Sentiment'])
     X = df['OriginalTweet']
     y = df['Sentiment']
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
-    vectorizer = CountVectorizer()
-    X_train = vectorizer.fit_transform(X_train)
+    vectorizer = CountVectorizer(analyzer= 'word', binary = False, max_df = 0.9, max_features=None, min_df = 2, ngram_range = (1, 3), stop_words=None, strip_accents = None)
+    X = vectorizer.fit_transform(X)
     mnb = MultinomialNB()
-    mnb.fit(X_train, y_train)
-    y_pred = mnb.predict(X_train)
+    mnb.fit(X, y)
+    y_pred = mnb.predict(X)
     y_pred = le.inverse_transform(y_pred)
-    y_train = le.inverse_transform(y_train)
-    return y_train, y_pred
-
-
-# def mnb_predict(df):
-#     le = LabelEncoder()
-#     df['Sentiment'] = le.fit_transform(df['Sentiment'])
-#     X = df['OriginalTweet']
-#     y = df['Sentiment']
-#     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
-    
-#     # Define the parameter grid
-#     param_grid = {
-#         'vectorizer__max_df': [0.5, 0.75, 1.0],
-#         'vectorizer__min_df': [0.01, 0.02, 0.03],
-#         'vectorizer__max_features': [None, 5000, 10000, 20000]
-#     }
-
-#     # Create a pipeline
-#     pipeline = Pipeline([
-#         ('vectorizer', CountVectorizer()),
-#         ('classifier', MultinomialNB())
-#     ])
-
-#     # Create a GridSearchCV object
-#     grid_search = GridSearchCV(pipeline, param_grid, cv=5, scoring='accuracy')
-
-#     # Fit the GridSearchCV object to the data
-#     grid_search.fit(X_train, y_train)
-
-#     # Get the best parameters
-#     best_params = grid_search.best_params_
-    
-#     # Predict using the best model
-#     y_pred = grid_search.predict(X_train)
-    
-#     y_pred = le.inverse_transform(y_pred)
-#     y_train = le.inverse_transform(y_train)
-#     return y_train, y_pred, best_params
+    df['Sentiment'] = sentiments
+    return y_pred
 
 
 # Given a 1d array (numpy.ndarray) y_pred with predicted labels (e.g. 'Neutral', 'Positive') 

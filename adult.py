@@ -47,7 +47,8 @@ def bachelors_masters_percentage(df):
 # Return a pandas dataframe (new copy) obtained from the pandas dataframe df 
 # by removing all instances with at least one missing value.
 def data_frame_without_missing_values(df):
-	dfCopy = df.dropna(inplace = True)
+	dfCopy = df.copy()
+	dfCopy.dropna(inplace = True)
 	return dfCopy
 
 
@@ -55,7 +56,8 @@ def data_frame_without_missing_values(df):
 # by converting the df categorical attributes to numeric using one-hot encoding.
 # The function's output should not contain the target attribute.
 def one_hot_encoding(df):
-	dfCopy = df.drop(columns = ['class'])
+	dfCopy = df.copy()
+	dfCopy.drop(columns = ['class'], inplace = True)
 	dfCopy = pd.get_dummies(dfCopy, dtype=int)
 	return dfCopy
 

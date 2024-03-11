@@ -5,6 +5,7 @@ from sklearn.cluster import KMeans, AgglomerativeClustering
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import silhouette_score
 import matplotlib.pyplot as plt
+import numpy as np
 
 # Return a pandas dataframe containing the data set that needs to be extracted from the data_file.
 # data_file will be populated with the string 'wholesale_customers.csv'.
@@ -118,12 +119,25 @@ def best_clustering_score(rdf):
 # Run the Kmeans algorithm with k=3 by using the standardized data set.
 # Generate a scatter plot for each pair of attributes.
 # Data points in different clusters should appear with different colors.
-def scatter_plots(df):
-	X = standardize(df)
-	y = kmeans(X, 3)
-	X['cluster'] = y
 
-	attributes = df.columns
-	for i in range(len(attributes)):
-		for j in range(i+1, len(attributes)):
-			X.plot.scatter(x = attributes[i], y = attributes[j], c = 'cluster', colormap = 'viridis')
+def scatter_plots(df):
+    X = standardize(df)
+    y = kmeans(X, 3)
+    X['cluster'] = y
+
+    attributes = df.columns
+    num_attributes = len(attributes)
+    fig, axs = plt.subplots(nrows=3, ncols=5, figsize=(24, 16))
+
+    plot_count = 0
+    for i in range(num_attributes):
+        for j in range(i+1, num_attributes):
+            row = plot_count // 5
+            col = plot_count % 5
+            axs[row, col].scatter(X[attributes[i]], X[attributes[j]], c=X['cluster'], cmap='viridis')
+            axs[row, col].set_xlabel(attributes[i])
+            axs[row, col].set_ylabel(attributes[j])
+            plot_count += 1
+	
+    plt.tight_layout()
+    plt.show()
