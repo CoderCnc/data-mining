@@ -47,18 +47,17 @@ def bachelors_masters_percentage(df):
 # Return a pandas dataframe (new copy) obtained from the pandas dataframe df 
 # by removing all instances with at least one missing value.
 def data_frame_without_missing_values(df):
-	df.dropna(inplace = True)
-	return df
+	dfCopy = df.dropna(inplace = True)
+	return dfCopy
 
 
 # Return a pandas dataframe (new copy) from the pandas dataframe df 
 # by converting the df categorical attributes to numeric using one-hot encoding.
 # The function's output should not contain the target attribute.
 def one_hot_encoding(df):
-	encoder = OneHotEncoder(sparse_output = False)
-	encoded_data = encoder.fit_transform(df.iloc[:, :-1])
-	encoded_df = pd.DataFrame(encoded_data, columns = encoder.get_feature_names_out(df.columns[:-1]))
-	return encoded_df
+	dfCopy = df.drop(columns = ['class'])
+	dfCopy = pd.get_dummies(dfCopy, dtype=int)
+	return dfCopy
 
 
 # Return a pandas series (new copy), from the pandas dataframe df, 
@@ -75,7 +74,7 @@ def label_encoding(df):
 # build a decision tree and use it to predict labels for X_train. 
 # Return a pandas series with the predicted values. 
 def dt_predict(X_train,y_train):
-	classifier = DecisionTreeClassifier()
+	classifier = DecisionTreeClassifier(random_state=0)
 	classifier.fit(X_train, y_train)
 	y_pred = classifier.predict(X_train)
 	return pd.Series(y_pred, name = 'class')
