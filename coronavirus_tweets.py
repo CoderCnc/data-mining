@@ -7,8 +7,9 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.metrics import accuracy_score
 from sklearn.preprocessing import LabelEncoder
-from sklearn.model_selection import GridSearchCV
-from sklearn.pipeline import Pipeline
+from nltk.tokenize import word_tokenize
+import nltk
+nltk.download('punkt')
 
 
 # Return a pandas dataframe containing the data set.
@@ -55,9 +56,10 @@ def remove_multiple_consecutive_whitespaces(df):
 
 # Given a dataframe where each tweet is one string with words separated by single whitespaces,
 # tokenize every tweet by converting it into a list of words (strings).
+
 def tokenize(df):
-	df['OriginalTweet'] = df['OriginalTweet'].str.split()
-	return df
+    df['OriginalTweet'] = df['OriginalTweet'].apply(lambda x: word_tokenize(x))
+    return df
 
 
 # Given dataframe tdf with the tweets tokenized, return the number of words in all tweets including repetitions.

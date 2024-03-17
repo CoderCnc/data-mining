@@ -2,10 +2,8 @@
 
 import pandas as pd
 from sklearn.cluster import KMeans, AgglomerativeClustering
-from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import silhouette_score
 import matplotlib.pyplot as plt
-import numpy as np
 
 # Return a pandas dataframe containing the data set that needs to be extracted from the data_file.
 # data_file will be populated with the string 'wholesale_customers.csv'.
@@ -20,7 +18,7 @@ def read_csv_2(data_file):
 # These strings index the new dataframe columns. 
 # Each row should correspond to an attribute in the original data and be indexed with the attribute name.
 def summary_statistics(df):
-	return round(df.describe().loc[['mean', 'std', 'min', 'max']])
+	return round(df.describe().loc[['mean', 'std', 'min', 'max']].transpose())
 
 
 # Given a dataframe df with numeric values, return a dataframe (new copy)

@@ -2,7 +2,6 @@
 # Part 1: Decision Trees with Categorical Attributes
 
 import pandas as pd
-from sklearn.preprocessing import OneHotEncoder
 from sklearn.preprocessing import LabelEncoder
 from sklearn.tree import DecisionTreeClassifier
 
