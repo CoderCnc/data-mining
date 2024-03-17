@@ -124,18 +124,9 @@ def scatter_plots(df):
     X['cluster'] = y
 
     attributes = df.columns
-    num_attributes = len(attributes)
-    fig, axs = plt.subplots(nrows=3, ncols=5, figsize=(24, 16))
-
-    plot_count = 0
-    for i in range(num_attributes):
-        for j in range(i+1, num_attributes):
-            row = plot_count // 5
-            col = plot_count % 5
-            axs[row, col].scatter(X[attributes[i]], X[attributes[j]], c=X['cluster'], cmap='viridis')
-            axs[row, col].set_xlabel(attributes[i])
-            axs[row, col].set_ylabel(attributes[j])
-            plot_count += 1
-	
-    plt.tight_layout()
-    plt.show()
+    for i in range(len(attributes)):
+        for j in range(i+1, len(attributes)):
+            fig, ax = plt.subplots()
+            X.plot.scatter(x = attributes[i], y = attributes[j], c = 'cluster', colormap = 'viridis', ax=ax)
+            fig.savefig(f'{attributes[i]}_vs_{attributes[j]}.pdf')
+            plt.close(fig)
