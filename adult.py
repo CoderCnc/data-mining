@@ -84,4 +84,4 @@ def dt_predict(X_train,y_train):
 # Given a pandas series y_pred with the predicted labels and a pandas series y_true with the true labels,
 # compute the error rate of the classifier that produced y_pred.  
 def dt_error_rate(y_pred, y_true):
-	return (y_pred.values != y_true.values).sum() / y_true.shape[0] * 100
+	return (y_pred.values != y_true.values).sum() / y_true.shape[0]

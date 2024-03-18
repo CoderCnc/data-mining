@@ -35,7 +35,7 @@ def standardize(df):
 # To see the impact of the random initialization,
 # using only one set of initial centroids in the kmeans run.
 def kmeans(df, k):
-	kmeans = KMeans(n_clusters = k)
+	kmeans = KMeans(init = 'random', n_clusters = k, n_init= 1)
 	y = kmeans.fit_predict(df)
 	y = pd.Series(y)
 	return y
@@ -110,8 +110,8 @@ def cluster_evaluation(df):
 # Given the performance evaluation dataframe produced by the cluster_evaluation function,
 # return the best computed Silhouette score.
 def best_clustering_score(rdf):
-	print(rdf.loc[rdf['Silhouette Score'].idxmax()])
 	return rdf['Silhouette Score'].max()
+
 
 
 # Run the Kmeans algorithm with k=3 by using the standardized data set.

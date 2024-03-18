@@ -81,9 +81,9 @@ def frequent_words(tdf,k):
 # The function should download the list of stop words via:
 # https://raw.githubusercontent.com/fozziethebeat/S-Space/master/data/english-stop-words-large.txt
 def remove_stop_words(tdf):
-	stop_words = requests.get('https://raw.githubusercontent.com/fozziethebeat/S-Space/master/data/english-stop-words-large.txt').text.split()
-	tdf['OriginalTweet'] = tdf['OriginalTweet'].apply(lambda x: [word for word in x if word not in stop_words])
-	return tdf
+    stop_words = set(requests.get('https://raw.githubusercontent.com/fozziethebeat/S-Space/master/data/english-stop-words-large.txt').text.split())
+    tdf['OriginalTweet'] = tdf['OriginalTweet'].apply(lambda x: [word for word in x if word not in stop_words and len(word) > 2])
+    return tdf
 
 
 # Given dataframe tdf with the tweets tokenized, reduce each word in every tweet to its stem.
